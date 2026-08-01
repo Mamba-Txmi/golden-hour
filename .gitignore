@@ -1,0 +1,6 @@
+.env*
+# it's usually something like: .env and .env.local
+
+# OS/editor cruft
+Thumbs.db
+.DS_Store
