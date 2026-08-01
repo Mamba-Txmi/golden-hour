@@ -9,6 +9,8 @@
 - `script.js` — all app logic: geocoding branch (postcode vs city), fetches to OpenWeather/postcodes.io/sunrisesunset.io, rendering results into the DOM. **known** for the postcode/city branch (`/\d/.test(searchInput)`, evidenced). **parked** for the async/loading-state handling — `sunInfo.style.display = 'block'` fires before any fetch resolves, so there's a moment of visible-but-empty boxes; acknowledged as accidental, not designed. Revisit when building the Places results loading state. → [[async-fetch-flow]], [[dom-visibility-toggling]]
 - `.vscode/launch.json` — **generated**, one-liner: VS Code's Edge-launch config for opening `index.html` directly. Machine-made, never hand-edit.
 - `skills-lock.json` — **generated**, one-liner: records which learning-method skills are installed and their source hashes. Not part of the app.
+- `.gitignore` — **known**: self-authored the `.env*` line (correctly reasoned it future-proofs beyond a single `.env` file); OS/editor cruft lines (`Thumbs.db`, `.DS_Store`) are standard boilerplate, not yet individually probed. → [[gitignore-patterns]]
+- `.git/` — **generated**, one-liner: git's own internal database (commit history, staged changes). Machine-managed, never hand-edit directly — interact only through `git` commands. → [[git-version-control]]
 
 ## api/
 

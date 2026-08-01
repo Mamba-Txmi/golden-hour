@@ -50,6 +50,13 @@
 - depends-on: none
 
 ## git-version-control
-- status: **seed**
-- evidence: no `.git` present anywhere in the project; absence noted directly, not yet discussed with the learner.
+- status: **practicing**
+- last-reviewed: 2026-08-01
+- evidence (2026-08-01): ran `git init` and correctly predicted a new repo would connect to an account (fixed to: local-only, no account link — misconception corrected and confirmed understood on the spot). Wrote `.gitignore` themselves, correctly reasoning `.env*` would still catch a plain `.env` file. Set `user.name`/`user.email` via `git config --global`, staged with `git add .`, and made the first commit (`git commit -m "First ever Commit"`) after self-correcting a `config`/`commit` typo once pointed out. First contact today — capped at practicing, not understood, until a later review confirms it stuck.
 - depends-on: none
+
+## gitignore-patterns
+- status: **practicing**
+- last-reviewed: 2026-08-01
+- evidence (2026-08-01): correctly reasoned that a bare `.env` line matches only that exact filename, then asked whether `.env*` would still protect the real key — showing they understood the wildcard as "match this plus anything after," not just copying a suggestion.
+- depends-on: [[git-version-control]]

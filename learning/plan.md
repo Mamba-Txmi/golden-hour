@@ -13,9 +13,9 @@
 No `.git` exists yet. `git init`, a sensible `.gitignore` (env files, editor cruft), and a baseline commit that includes everything currently on disk — including `learning/`.
 Deliverable: the project can never be lost again.
 
-- [ ] `git init` the project
-- [ ] Write a `.gitignore` (env files, editor/OS cruft) — even though no `.env` exists yet, Section 3 will add one
-- [ ] Stage everything and make a baseline commit
+- [x] `git init` the project
+- [x] Write a `.gitignore` (env files, editor/OS cruft) — even though no `.env` exists yet, Section 3 will add one
+- [x] Stage everything and make a baseline commit
 
 ### Section 2 — Geolocation input + radius selector
 Add a "use my location" option (browser Geolocation API) alongside the existing typed city/postcode input, and a radius selector (dropdown or slider) that will later scope the Places search. Wire both into the existing `testUserInput()` flow so sunset-time lookup works from either input path.
