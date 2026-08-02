@@ -24,10 +24,10 @@ Deliverable: you can search by typed location or by "use my location," and pick 
 
 - [x] Add the two new UI controls to `index.html`: a "use my location" button and a radius dropdown (markup only, no behavior yet)
 - [x] Style the new controls in `styles.css` so they fit the existing look
-- [ ] Implement `navigator.geolocation.getCurrentPosition` in `script.js` to fetch the browser's coordinates
-- [ ] Wire those coordinates into the existing sunset-time flow, bypassing the geocoding step
-- [ ] Read the selected radius value and store it for later (Section 4 will consume it)
-- [ ] Handle geolocation errors (permission denied, unsupported browser) with a real reclaim of [[dom-visibility-toggling]] for the loading/error state
+- [x] Implement `navigator.geolocation.getCurrentPosition` in `script.js` to fetch the browser's coordinates
+- [x] Wire those coordinates into the existing sunset-time flow, bypassing the geocoding step — reclaim task [[dom-visibility-toggling]] completed here, ahead of schedule, in both `getGeoLocation` and `findGoldenHour`
+- [x] Read the selected radius value and store it for later (Section 4 will consume it)
+- [ ] Handle geolocation errors (permission denied, unsupported browser) with a user-facing message
 
 ### Section 3 — Serverless proxy for the Places API key
 Set up a Vercel serverless function in `api/api/viewpoints.js` (currently an empty stub) that holds the Google Places API key server-side via an environment variable, and deploy it so the key is verifiably absent from shipped client code.
