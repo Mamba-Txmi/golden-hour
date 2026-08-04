@@ -27,12 +27,19 @@ Deliverable: you can search by typed location or by "use my location," and pick 
 - [x] Implement `navigator.geolocation.getCurrentPosition` in `script.js` to fetch the browser's coordinates
 - [x] Wire those coordinates into the existing sunset-time flow, bypassing the geocoding step — reclaim task [[dom-visibility-toggling]] completed here, ahead of schedule, in both `getGeoLocation` and `findGoldenHour`
 - [x] Read the selected radius value and store it for later (Section 4 will consume it)
-- [ ] Handle geolocation errors (permission denied, unsupported browser) with a user-facing message
+- [x] Handle geolocation errors (permission denied, unsupported browser) with a user-facing message
 
 ### Section 3 — Serverless proxy for the Places API key
 Set up a Vercel serverless function in `api/api/viewpoints.js` (currently an empty stub) that holds the Google Places API key server-side via an environment variable, and deploy it so the key is verifiably absent from shipped client code.
 **Reclaim task**: [[env-variables]] — no `.env`/env-var handling exists anywhere yet (the OpenWeather key is still hardcoded client-side). This section is where that concept turns load-bearing for the first time.
 Deliverable: calling your deployed function returns data, and the Places key never appears in browser dev tools.
+
+- [x] Write a minimal serverless function in `api/api/viewpoints.js` that returns a small test JSON response
+- [x] Run `vercel dev` locally and hit the function's local URL to see that test response
+- [x] Create a `.env` file holding the real Google Places API key and read it in the function via `process.env`
+- [x] Have the function call the Google Places API (New) server-side using that key, and return real data (still tested locally)
+- [ ] Deploy to Vercel and add the API key as an environment variable in the deployed project too
+- [ ] Verify in the browser's Network tab that calling the deployed function never exposes the real key to the client
 
 ### Section 4 — Nearby places, reviews, and AI summaries
 From the serverless function, call the Google Places API (New) — Nearby Search using the geocoded lat/lon and chosen radius, with a field mask that includes reviews and the generative/AI summary fields — and render the results in the UI.

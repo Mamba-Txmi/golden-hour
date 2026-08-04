@@ -9,15 +9,29 @@
 - depends-on: none
 
 ## async-fetch-flow
-- status: **seed**
-- evidence: not yet probed for the *why* of `await`/`async` structure itself (only observed as working code). Flagged for [[dom-visibility-toggling]] follow-up.
+- status: **practicing**
+- last-reviewed: 2026-08-04
+- evidence (2026-08-04): in `api/api/viewpoints.js`, self-corrected a missing `async`/`await` pairing (function returning before `fetch` resolved) and a keyword-order syntax error (`async export default` → `export default async`), and reasoned through why `response.ok` should be checked before calling `.json()` by comparing to the existing pattern in `script.js`.
 - depends-on: none
 
 ## dom-visibility-toggling
-- status: **seed**
+- status: **practicing**
+- last-reviewed: 2026-08-02
 - evidence (2026-08-01): `sunInfo.style.display = 'block'` set early was confirmed accidental ("just where the line ended up... didn't know it affected much") — real gap, not designed loading-state handling.
+- evidence (2026-08-02): **reclaimed.** After refactoring `getSunData` to the top level (needed for the geolocation path), correctly reasoned that placing `display='block'` right after `getCurrentPosition()` (non-blocking) recreated the same premature-visibility bug, then moved it to *after* `await getSunData(...)` in both `getGeoLocation` and `findGoldenHour` — display now only flips once content is actually rendered, no empty-box flash in either path. Self-driven fix in both places, not just one told to.
 - depends-on: [[async-fetch-flow]]
-- comes due: when building the Places results panel + loading/error states (early plan section).
+
+## js-function-scope
+- status: **practicing**
+- last-reviewed: 2026-08-02
+- evidence (2026-08-02): correctly reasoned, unprompted, that `getSunData` (originally nested in `findGoldenHour`) couldn't be called from `getGeoLocation` because of scope, and separately that `searchInput` (a `let` local to `findGoldenHour`) wouldn't be in scope once `getSunData` moved to the top level — proposed the parameter-based fix themselves before being shown syntax.
+- depends-on: none
+
+## stale-dom-reads
+- status: **practicing**
+- last-reviewed: 2026-08-02
+- evidence (2026-08-02): read `radius-select`'s `.value` once into a top-level `const` at page-load, missing that it wouldn't reflect later changes. First attempt (switching to `let`) didn't fix the actual timing bug; after a comparison to how `searchInput` is re-read fresh at the top of `findGoldenHour` every call, correctly applied the same re-read-at-call-time fix in both `getGeoLocation` and `findGoldenHour`.
+- depends-on: [[js-function-scope]]
 
 ## api-key-security
 - status: **introduced**
@@ -25,23 +39,35 @@
 - depends-on: [[vercel-serverless-functions]], [[env-variables]]
 
 ## vercel-serverless-functions
-- status: **seed**
+- status: **practicing**
+- last-reviewed: 2026-08-04
 - evidence (2026-07-31): explicitly stated "i dont know anything about vercel serverless function[s]".
+- evidence (2026-08-04): wrote `export default function(req, res){ res.status(200).json(...) }` in `api/api/viewpoints.js` after being told the contract, not shown the code. Ran `vercel dev`, correctly predicted the endpoint URL from the file path (`api/api/viewpoints.js` → `/api/api/viewpoints`) before testing, and confirmed it live in the browser.
 - depends-on: none
 
 ## env-variables
-- status: **seed**
-- evidence: no env-var usage anywhere in the codebase yet (existing OpenWeather key is hardcoded client-side). Will become load-bearing once the Vercel function holds the Places key.
+- status: **practicing**
+- last-reviewed: 2026-08-04
+- evidence (2026-08-04): created `.env` with the real Places key, read it via `process.env.GOOGLE_API_KEY` in `api/api/viewpoints.js`. Made and self-corrected two real mistakes: capitalized `Process.env` (JS is case-sensitive, caught via question), and a trailing `;` in `.env` (a JS-syntax habit bleeding into a file format that doesn't use it — caught via question, then fixed). Confirmed the real key printed correctly in the terminal after restarting `vercel dev`.
 - depends-on: none
 
 ## google-places-api-new
-- status: **seed**
+- status: **practicing**
+- last-reviewed: 2026-08-04
 - evidence (2026-07-31): explicitly stated "i dont know... how to use the places api to retreive the sunset locations".
+- evidence (2026-08-04): built the real Nearby Search (New) POST request in `api/api/viewpoints.js` from a plain-language contract description (not shown code). Made and self-corrected real mistakes along the way — translated curl syntax to `fetch` options, fixed an array where a header needed a joined string, fixed a flat dotted key (`'locationRestriction.circle'`) into proper nesting, reordered `response.ok` check before `.json()` parsing after comparing to their own `script.js` pattern. Independently diagnosed a `400` error caused by an invalid `includedTypes` value by reading Google's docs, without being told the fix. Confirmed real place data (names, addresses, photos) returned end-to-end.
 - depends-on: [[vercel-serverless-functions]]
 
 ## browser-geolocation-api
-- status: **seed**
-- evidence: not yet built or discussed beyond the original feature request.
+- status: **practicing**
+- last-reviewed: 2026-08-02
+- evidence (2026-08-02): wrote `getGeoLocation()` calling `navigator.geolocation.getCurrentPosition(success, error)`, self-corrected a `.`/`,` typo after being asked to compare them, and fixed a parameter-naming mismatch (renamed `success` to `position` to match its use in the body) after a guided question. Tested live in browser — got the permission prompt and confirmed coordinates logged. First contact today — capped at practicing.
+- depends-on: none
+
+## arrow-functions-and-callbacks
+- status: **practicing**
+- last-reviewed: 2026-08-02
+- evidence (2026-08-02): refactored named `success`/`error` functions into inline arrow-function arguments unprompted, stated this was just learned. Correctly used callback parameters after one guided fix.
 - depends-on: none
 
 ## google-maps-directions-links
