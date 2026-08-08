@@ -38,8 +38,8 @@ Deliverable: calling your deployed function returns data, and the Places key nev
 - [x] Run `vercel dev` locally and hit the function's local URL to see that test response
 - [x] Create a `.env` file holding the real Google Places API key and read it in the function via `process.env`
 - [x] Have the function call the Google Places API (New) server-side using that key, and return real data (still tested locally)
-- [ ] Deploy to Vercel and add the API key as an environment variable in the deployed project too
-- [ ] Verify in the browser's Network tab that calling the deployed function never exposes the real key to the client
+- [x] Deploy to Vercel and add the API key as an environment variable in the deployed project too
+- [x] Verify in the browser's Network tab that calling the deployed function never exposes the real key to the client
 
 ### Section 4 — Nearby places, reviews, and AI summaries
 From the serverless function, call the Google Places API (New) — Nearby Search using the geocoded lat/lon and chosen radius, with a field mask that includes reviews and the generative/AI summary fields — and render the results in the UI.

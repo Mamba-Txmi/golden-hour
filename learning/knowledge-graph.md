@@ -34,8 +34,10 @@
 - depends-on: [[js-function-scope]]
 
 ## api-key-security
-- status: **introduced**
-- evidence (2026-07-31): articulated unprompted that the Places key should live server-side on Vercel "so that when it goes public, the api is not visible" — correct reasoning, own words. Not yet practiced (no server code written).
+- status: **practicing**
+- last-reviewed: 2026-08-08
+- evidence (2026-07-31): articulated unprompted that the Places key should live server-side on Vercel "so that when it goes public, the api is not visible" — correct reasoning, own words.
+- evidence (2026-08-08): correctly predicted `.env` alone wouldn't reach the deployed server since it's gitignored and never pushed; set the real key via `vercel env add` as a **sensitive** variable (understood that means write-only, unreadable later) scoped to Production; deployed with `vercel --prod`; independently verified via the Network tab that the key appears in neither request nor response on the live site. Full loop from stated intent to verified practice.
 - depends-on: [[vercel-serverless-functions]], [[env-variables]]
 
 ## vercel-serverless-functions
@@ -77,8 +79,9 @@
 
 ## git-version-control
 - status: **practicing**
-- last-reviewed: 2026-08-01
+- last-reviewed: 2026-08-08
 - evidence (2026-08-01): ran `git init` and correctly predicted a new repo would connect to an account (fixed to: local-only, no account link — misconception corrected and confirmed understood on the spot). Wrote `.gitignore` themselves, correctly reasoning `.env*` would still catch a plain `.env` file. Set `user.name`/`user.email` via `git config --global`, staged with `git add .`, and made the first commit (`git commit -m "First ever Commit"`) after self-correcting a `config`/`commit` typo once pointed out. First contact today — capped at practicing, not understood, until a later review confirms it stuck.
+- evidence (2026-08-08): passed a spaced review after a week away — correctly explained a commit as a checkpoint in history distinct from a plain file save. Also made 4 more real commits across Sections 2-3 in the meantime without prompting on syntax, only reminders to do it.
 - depends-on: none
 
 ## gitignore-patterns

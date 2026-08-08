@@ -11,6 +11,7 @@
 - `skills-lock.json` — **generated**, one-liner: records which learning-method skills are installed and their source hashes. Not part of the app.
 - `.gitignore` — **known**: self-authored the `.env*` line (correctly reasoned it future-proofs beyond a single `.env` file); OS/editor cruft lines (`Thumbs.db`, `.DS_Store`) are standard boilerplate, not yet individually probed. → [[gitignore-patterns]]
 - `.env` — **known**: self-authored, holds the real Google Places API key as `GOOGLE_API_KEY`. Correctly excluded from git by the `.env*` pattern above. → [[env-variables]]
+- `.vercel/` — **generated**, one-liner: created automatically when the project was linked/deployed via the Vercel CLI (`vercel dev` / `vercel --prod`); holds local project-link metadata. Auto-added to `.gitignore` by the CLI itself. Machine-managed, never hand-edit.
 - `.git/` — **generated**, one-liner: git's own internal database (commit history, staged changes). Machine-managed, never hand-edit directly — interact only through `git` commands. → [[git-version-control]]
 
 ## api/
