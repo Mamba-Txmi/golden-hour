@@ -43,8 +43,15 @@ Deliverable: calling your deployed function returns data, and the Places key nev
 
 ### Section 4 — Nearby places, reviews, and AI summaries
 From the serverless function, call the Google Places API (New) — Nearby Search using the geocoded lat/lon and chosen radius, with a field mask that includes reviews and the generative/AI summary fields — and render the results in the UI.
-**Reclaim task**: [[async-fetch-flow]] — still at seed status (never explicitly probed). Building this second, richer fetch chain is the place to nail down *why* `async`/`await` is structured the way it is, not just that it works.
+**Reclaim task**: [[async-fetch-flow]] — already resolved ahead of schedule during Section 3 (the `async`/`await` ordering bugs in `api/api/viewpoints.js`). No new reclaim task forced here; none of the remaining debt in the graph fits this section's work.
 Deliverable: searching a location shows a real list of nearby sunset-watching spots with reviews and a short AI summary each.
+
+- [x] Update `api/api/viewpoints.js` to accept lat/lon/radius from the incoming request instead of hardcoded test values
+- [x] Look up the correct Places API (New) field names for reviews and the AI-generated summary, and expand the field mask
+- [x] Add a function in `script.js` that calls your deployed `/api/api/viewpoints` endpoint with the real coordinates and radius, after the sunset lookup succeeds
+- [ ] Add the HTML/CSS structure for a "nearby places" results section
+- [ ] Render each place (name, address, photo, review snippet, AI summary) into that section
+- [ ] Test end-to-end: search a real location and see real nearby places with reviews/summaries appear
 
 ### Section 5 — Directions via Google Maps
 Add a "Get Directions" link/button per place that opens Google Maps directions to that spot.

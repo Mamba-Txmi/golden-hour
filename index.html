@@ -23,9 +23,9 @@
             </div>
             <div id="location-options">
                 <select id="radius-select">
-                    <option value="5">5 km</option>
-                    <option value="10">10 km</option>
-                    <option value="20">20 km</option>
+                    <option value="10000">10 km</option>
+                    <option value="20000">20 km</option>
+                    <option value="50000">50 km</option>
                 </select>
                 <input id="geo-btn" type="button" value="Use My Location" onclick="getGeoLocation()"/>
             </div>
@@ -38,6 +38,7 @@
                 <div class="hour-holder">
                     <div id="golden-hour"></div>
                 </div>
+                <div id="nearby-sun-place"></div>
             </div>
         </section>
     </main>

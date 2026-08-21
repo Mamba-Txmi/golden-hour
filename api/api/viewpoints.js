@@ -1,21 +1,21 @@
 export default async function vercel (req,res){
     const key = process.env.GOOGLE_API_KEY;
-    const response = await fetch (`https://places.googleapis.com/v1/places:searchNearby`, {
+    const response = await fetch (`https://places.googleapis.com/v1/places:searchText`, {
         method: 'POST',
         headers: {
             'X-Goog-Api-Key': key,
             'content-type': 'application/json',
-            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos'
+            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos,places.reviewSummary,places.rating'
         },
         body: JSON.stringify({ 
-            'includedTypes': ['scenic_spot','tourist_attraction','park','mountain_peak'],
-            'locationRestriction': {
+            'textQuery' : 'scenic overlook  lookout beautifulsunset view point',
+            'locationBias': {
                 'circle': {
                     'center': {
-                        'latitude':51.5074,
-                        'longitude':-0.1278,
+                        'latitude':Number(req.query.lat),
+                        'longitude':Number(req.query.lon),
                     },
-                    'radius':5000
+                    'radius': Number(req.query.radius)
                 }
         }
          })

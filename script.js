@@ -36,13 +36,73 @@ async function getSunData(lat, lon,locationparam){
     }
 
 
+function getNearbyPlaces(lat, lon, radius) {
+    const nearbySunPlace = document.getElementById("nearby-sun-place");
+    nearbySunPlace.innerHTML = '';
+    fetch(`/api/api/viewpoints?lat=${lat}&lon=${lon}&radius=${radius}`)
+        .then(response => response.json())
+        .then(viewpointsData => {
+            if (viewpointsData.places && viewpointsData.places.length){
+                for (let i=0; i < viewpointsData.places.length; i++){
+                    placesCard(viewpointsData.places[i], "#nearby-sun-place")
+                }
+            }else{
+                nearbySunPlace.innerHTML =
+                `<div id= "no-viewpoints-message">
+                <p>No nearby Sunset Viewpoints have been found in this radius</p>
+                <p>Please try increasing the radius or search from a different location</p>
+                </div>`
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching nearby places:', error);
+        });
+       
+
+}
+             
+          
+        
+   
+        
+
+
+function placesCard (data, id,) {
+    const parent = document.querySelector(id);
+    let photoHTML = '';
+    if (data.photos && data.photos.length > 0) {
+        photoHTML = `<img src="/api/api/photos?name=${data.photos[0].name}" alt="Place Photo" id="card-image">`;
+    }else{
+        photoHTML =`<p>No photo currently available</p>`
+    }
+    let reviewSum = ''
+    if (data.reviewSummary && data.reviewSummary.text){
+        reviewSum =`<p>"${data.reviewSummary.text.text}"</p>`;
+    }else{
+        reviewSum =`<p>No reviews available</p>`
+    }
+    let cardInfo = `<div class="card">
+    ${photoHTML}
+    <h4>${data.displayName.text}</h4>
+    <p>${data.formattedAddress}</p>
+    ${reviewSum}
+    <p>Rating: ${data.rating}</p>
+   
+
+    </div>`
+    
+    parent.innerHTML += cardInfo;
+
+}
 
 function getGeoLocation() {
-    let userRadius = document.getElementById("radius-select").value;
+    const userRadius = Number(document.getElementById("radius-select").value);
     navigator.geolocation.getCurrentPosition(
         async (position)=>{
             console.log("Geolocation Coordinates: ",position.coords.latitude, position.coords.longitude);
             await getSunData(position.coords.latitude, position.coords.longitude, "Your Location");
+            await getNearbyPlaces(position.coords.latitude, position.coords.longitude, userRadius);
+
             sunInfo.style.display ='block';
         },
         (error)=>{
@@ -56,8 +116,11 @@ function getGeoLocation() {
     
 }
 
+
+
+
 async function findGoldenHour() {
-    let userRadius = document.getElementById("radius-select").value;
+    const userRadius = Number(document.getElementById("radius-select").value);
     let searchInput = document.getElementById("location-finder").value.toLowerCase().replace(/\s/g,'');
     console.log(searchInput)
     
@@ -117,6 +180,7 @@ async function findGoldenHour() {
     if (!geoData) return;
     console.log(geoData);
     await getSunData(geoData.lat,geoData.lon,searchInput);
+    await getNearbyPlaces(geoData.lat, geoData.lon, userRadius);
     sunInfo.style.display ='block';
     searchInput = "";
     

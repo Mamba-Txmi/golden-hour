@@ -23,8 +23,9 @@
 
 ## js-function-scope
 - status: **practicing**
-- last-reviewed: 2026-08-02
+- last-reviewed: 2026-08-10
 - evidence (2026-08-02): correctly reasoned, unprompted, that `getSunData` (originally nested in `findGoldenHour`) couldn't be called from `getGeoLocation` because of scope, and separately that `searchInput` (a `let` local to `findGoldenHour`) wouldn't be in scope once `getSunData` moved to the top level — proposed the parameter-based fix themselves before being shown syntax.
+- evidence (2026-08-10): fixed `getNearbyPlaces(geoData.latitude, geoData.longitude, ...)` to `geoData.lat, geoData.lon` after being asked to check the actual property names on the object returned by `testUserInput()`, by comparing against the correct usage one line above.
 - depends-on: none
 
 ## stale-dom-reads
@@ -42,9 +43,10 @@
 
 ## vercel-serverless-functions
 - status: **practicing**
-- last-reviewed: 2026-08-04
+- last-reviewed: 2026-08-08
 - evidence (2026-07-31): explicitly stated "i dont know anything about vercel serverless function[s]".
 - evidence (2026-08-04): wrote `export default function(req, res){ res.status(200).json(...) }` in `api/api/viewpoints.js` after being told the contract, not shown the code. Ran `vercel dev`, correctly predicted the endpoint URL from the file path (`api/api/viewpoints.js` → `/api/api/viewpoints`) before testing, and confirmed it live in the browser.
+- evidence (2026-08-08): extended the function to read `req.query.lat/lon/radius` from incoming URL query parameters (converted with `Number(...)` since query values arrive as strings), correctly diagnosed that testing the bare URL without query params was the cause of "undefined" values rather than a code bug.
 - depends-on: none
 
 ## env-variables
@@ -55,7 +57,8 @@
 
 ## google-places-api-new
 - status: **practicing**
-- last-reviewed: 2026-08-04
+- last-reviewed: 2026-08-10
+- evidence (2026-08-10): looked up real Places API (New) field names for reviews/AI summary via docs rather than guessing, confirmed both populated with real content. Debugged an end-to-end integration issue methodically: distinguished production vs. localhost testing, used the Network tab's Request URL/Status/Response to isolate a `200 OK` empty response from a `404`, and correctly reasoned that Google's `radius` field is in meters while the dropdown values represented kilometers — fixed by converting the actual `value` attributes (10000/20000/50000), not just the display labels.
 - evidence (2026-07-31): explicitly stated "i dont know... how to use the places api to retreive the sunset locations".
 - evidence (2026-08-04): built the real Nearby Search (New) POST request in `api/api/viewpoints.js` from a plain-language contract description (not shown code). Made and self-corrected real mistakes along the way — translated curl syntax to `fetch` options, fixed an array where a header needed a joined string, fixed a flat dotted key (`'locationRestriction.circle'`) into proper nesting, reordered `response.ok` check before `.json()` parsing after comparing to their own `script.js` pattern. Independently diagnosed a `400` error caused by an invalid `includedTypes` value by reading Google's docs, without being told the fix. Confirmed real place data (names, addresses, photos) returned end-to-end.
 - depends-on: [[vercel-serverless-functions]]
@@ -86,6 +89,7 @@
 
 ## gitignore-patterns
 - status: **practicing**
-- last-reviewed: 2026-08-01
+- last-reviewed: 2026-08-08
 - evidence (2026-08-01): correctly reasoned that a bare `.env` line matches only that exact filename, then asked whether `.env*` would still protect the real key — showing they understood the wildcard as "match this plus anything after," not just copying a suggestion.
+- evidence (2026-08-08): passed a spaced review after a week away — correctly explained `.env*` covers "different versions of `.env`" in their own words.
 - depends-on: [[git-version-control]]
