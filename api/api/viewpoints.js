@@ -6,7 +6,7 @@ export default async function vercel (req,res){
         headers: {
             'X-Goog-Api-Key': key,
             'content-type': 'application/json',
-            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos,places.reviewSummary,places.rating'
+            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos,places.reviewSummary,places.rating,places.location'
         },
         body: JSON.stringify({ 
             'textQuery' : 'scenic overlook  lookout beautifulsunset view point',

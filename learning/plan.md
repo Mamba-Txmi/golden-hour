@@ -62,8 +62,15 @@ Deliverable: searching a location shows a real list of nearby sunset-watching sp
 
 ### Section 5 — Directions via Google Maps
 Add a "Get Directions" link/button per place that opens Google Maps directions to that spot.
-**Reclaim task**: [[api-key-security]] — currently at "introduced" (you reasoned through why the Places key needs to be server-side, but haven't applied it a second time). Now that the proxy pattern exists and works, move the still-exposed OpenWeather key behind it too, flipping this concept from introduced to practiced.
+**Reclaim task**: [[api-key-security]] — status is already at practicing (proven again independently via `api/api/photos.js`), but the concrete to-do never got done: the OpenWeather key is still hardcoded and exposed directly in `script.js`. This section moves it behind a proxy too.
 Deliverable: every listed place has a working one-click link to directions in Google Maps.
+
+- [x] Expand the field mask in `api/api/viewpoints.js` to include each place's coordinates (needed to build a directions link)
+- [x] Build a Google Maps directions URL for each place and add it as a "Get Directions" link/button in the card
+- [x] Style the new button to match the existing design
+- [x] Test that clicking "Get Directions" opens real, correct directions in Google Maps
+- [x] Create a new serverless endpoint (e.g. `api/api/geocode.js`) proxying the OpenWeather city-lookup call, so that key moves server-side too
+- [x] Update `getCityLonAndLat` in `script.js` to call your new geocode proxy instead of OpenWeather directly
 
 ## What this leaves out
 

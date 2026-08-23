@@ -40,6 +40,8 @@
 - evidence (2026-07-31): articulated unprompted that the Places key should live server-side on Vercel "so that when it goes public, the api is not visible" — correct reasoning, own words.
 - evidence (2026-08-08): correctly predicted `.env` alone wouldn't reach the deployed server since it's gitignored and never pushed; set the real key via `vercel env add` as a **sensitive** variable (understood that means write-only, unreadable later) scoped to Production; deployed with `vercel --prod`; independently verified via the Network tab that the key appears in neither request nor response on the live site. Full loop from stated intent to verified practice.
 - evidence (2026-08-14): recognized unprompted, before being told, that a Places Photo Media URL built client-side would expose the API key in `<img src>` — a second independent application of the pattern, not a repeated lesson.
+- evidence (2026-08-23): spaced review after 9 days — struggled. Attributed `photos.js`'s existence to images being binary rather than key exposure; the real reason (2026-08-14 evidence) didn't surface on recall without a refresher. Given a refresher distinguishing "why the proxy exists" (security) from "how the response is handled once there" (binary handling). Held at practicing, not advanced.
+- evidence (2026-08-23): completed the Section 5 reclaim task — built `api/api/geocode.js` proxying OpenWeather's geocoding call, moved the previously-hardcoded, client-exposed OpenWeather key into `.env`, updated `script.js` to call the proxy instead. Third independent application of the same key-hiding pattern (after `viewpoints.js`, `photos.js`), completed with only two small bugs (wrong query param name copied from a variable rename; response-parsing order) both self-corrected. Not yet upgraded to understood — the struggle earlier in this same session on *why* the pattern exists means the underlying reasoning isn't fully solid yet, even though the mechanical application is now strong.
 - depends-on: [[vercel-serverless-functions]], [[env-variables]]
 
 ## vercel-serverless-functions
@@ -108,8 +110,9 @@
 - depends-on: [[async-fetch-flow]]
 
 ## google-maps-directions-links
-- status: **seed**
-- evidence: not yet built or discussed beyond the original feature request.
+- status: **practicing**
+- last-reviewed: 2026-08-23
+- evidence (2026-08-23): built `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}` correctly from a plain-language description, understood `target="_blank"` opens a new tab rather than navigating away, styled it to match existing buttons, and confirmed it opens real correct directions in a live test.
 - depends-on: none
 
 ## git-version-control

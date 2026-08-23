@@ -132,6 +132,7 @@ main{
     width: 400px;
     padding: 20px;
     overflow-y: auto;
+    position:relative
 }
 
 #card-image{
@@ -139,6 +140,26 @@ main{
     height: 150px;
     object-fit:cover;
     border-radius: 10px;
+}
+
+#card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.directions-btn{
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #04467252;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+
+a{
+    color:black;
 }
 
 #sun-rise-set {

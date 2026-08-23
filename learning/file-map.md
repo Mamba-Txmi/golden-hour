@@ -10,7 +10,7 @@
 - `.vscode/launch.json` — **generated**, one-liner: VS Code's Edge-launch config for opening `index.html` directly. Machine-made, never hand-edit.
 - `skills-lock.json` — **generated**, one-liner: records which learning-method skills are installed and their source hashes. Not part of the app.
 - `.gitignore` — **known**: self-authored the `.env*` line (correctly reasoned it future-proofs beyond a single `.env` file); OS/editor cruft lines (`Thumbs.db`, `.DS_Store`) are standard boilerplate, not yet individually probed. → [[gitignore-patterns]]
-- `.env` — **known**: self-authored, holds the real Google Places API key as `GOOGLE_API_KEY`. Correctly excluded from git by the `.env*` pattern above. → [[env-variables]]
+- `.env` — **known**: self-authored, holds both real API keys (`GOOGLE_API_KEY`, `OPENWEATHER_API_KEY`) — the latter moved out of client-side `script.js` in Section 5. Correctly excluded from git by the `.env*` pattern above. → [[env-variables]]
 - `.vercel/` — **generated**, one-liner: created automatically when the project was linked/deployed via the Vercel CLI (`vercel dev` / `vercel --prod`); holds local project-link metadata. Auto-added to `.gitignore` by the CLI itself. Machine-managed, never hand-edit.
 - `.git/` — **generated**, one-liner: git's own internal database (commit history, staged changes). Machine-managed, never hand-edit directly — interact only through `git` commands. → [[git-version-control]]
 
@@ -18,6 +18,7 @@
 
 - `api/api/viewpoints.js` — **known**: self-authored Vercel serverless function proxying Google Places API (New) Text Search — reads lat/lon/radius from `req.query`, computes a `locationRestriction` bounding rectangle by hand (`radiusToRectangle`), searches with a sunset-relevant `textQuery`, returns real place data (name, address, photos, reviewSummary, rating). → [[vercel-serverless-functions]], [[google-places-api-new]], [[api-key-security]], [[async-fetch-flow]], [[geodesy-bounding-box-math]]
 - `api/api/photos.js` — **known**: self-authored second serverless proxy, forwards Google's Photo Media endpoint so the API key never appears in an `<img src>`. Handles binary image data via `response.arrayBuffer()`/`Buffer.from()`. → [[binary-data-handling]], [[api-key-security]]
+- `api/api/geocode.js` — **known**: self-authored third serverless proxy, forwards OpenWeather's city-geocoding call so that key (previously hardcoded client-side in `script.js`) is server-side too. → [[api-key-security]], [[env-variables]]
 
 ## .agents/skills/
 

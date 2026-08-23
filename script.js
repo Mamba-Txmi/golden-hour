@@ -5,7 +5,7 @@ const sunrise= document.getElementById("sunrise-box");
 const sunset = document.getElementById("sunset-box");
 const goldenHour = document.getElementById("golden-hour");
 
-const apiKey = '40aac21ae9fd50b8068b88db0a8134bf';
+
 
 
 async function getSunData(lat, lon,locationparam){
@@ -68,7 +68,7 @@ function getNearbyPlaces(lat, lon, radius) {
 
 
 function placesCard (data, id,) {
-    const parent = document.querySelector(id);
+    const parent = document.querySelector(id);// Get the parent element. Its another way of using document.getElementById
     let photoHTML = '';
     if (data.photos && data.photos.length > 0) {
         photoHTML = `<img src="/api/api/photos?name=${data.photos[0].name}" alt="Place Photo" id="card-image">`;
@@ -83,12 +83,12 @@ function placesCard (data, id,) {
     }
     let cardInfo = `<div class="card">
     ${photoHTML}
-    <h4>${data.displayName.text}</h4>
+    <div id="card-header"><h4 id="place-title">${data.displayName.text}</h4>
+    <a href ="https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}" target="_blank" class="directions-btn"> Get Directions </a>
+    </div>
     <p>${data.formattedAddress}</p>
     ${reviewSum}
     <p>Rating: ${data.rating}</p>
-   
-
     </div>`
     
     parent.innerHTML += cardInfo;
@@ -107,7 +107,7 @@ function getGeoLocation() {
         },
         (error)=>{
             console.log("Geolocation Error: ",error.message);
-             sunInfo.innerHTML = 
+            sunInfo.innerHTML = 
             `<h2>Unable to find your current location. </h2>
             <p>Please grant access to Geolocation </p>`;
             sunInfo.style.display ='block';
@@ -124,25 +124,21 @@ async function findGoldenHour() {
     let searchInput = document.getElementById("location-finder").value.toLowerCase().replace(/\s/g,'');
     console.log(searchInput)
     
-     async function getCityLonAndLat(){
-        const geoCodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(searchInput)}&limit=1&appid=${apiKey}`;
-        const response = await fetch(geoCodeURL);
-        if (!response.ok) {
-            console.log("Error fetching response", response.status);
-            return;
-        }
-
+    async function getCityLonAndLat(){
+        const response = await fetch(`/api/api/geocode?city=${encodeURIComponent(searchInput)}`);
         const data = await response.json();
-        if (data.length===0) {
+        if(data.length === 0){ 
             sunInfo.innerHTML = 
             `<h2>${searchInput} not found. </h2>
-            <p>Please try again </p>`;
-            return;
-        }else{
-            return data[0]
-        }
+                <p>Please try again </p>`;
+                return;
+            }else{
+                console.log(data);
+                return data[0]
+            }
 
-    }
+     }
+
 
     async function getPostcodeLonAndLat(){
         const geocodeURL = `https://api.postcodes.io/postcodes/${encodeURIComponent(searchInput)}`;
@@ -185,3 +181,4 @@ async function findGoldenHour() {
     searchInput = "";
     
 }
+
