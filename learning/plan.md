@@ -49,9 +49,16 @@ Deliverable: searching a location shows a real list of nearby sunset-watching sp
 - [x] Update `api/api/viewpoints.js` to accept lat/lon/radius from the incoming request instead of hardcoded test values
 - [x] Look up the correct Places API (New) field names for reviews and the AI-generated summary, and expand the field mask
 - [x] Add a function in `script.js` that calls your deployed `/api/api/viewpoints` endpoint with the real coordinates and radius, after the sunset lookup succeeds
-- [ ] Add the HTML/CSS structure for a "nearby places" results section
-- [ ] Render each place (name, address, photo, review snippet, AI summary) into that section
-- [ ] Test end-to-end: search a real location and see real nearby places with reviews/summaries appear
+- [x] Add the HTML/CSS structure for a "nearby places" results section
+- [x] Render each place (name, address, photo, review snippet, AI summary) into that section
+- [x] Test end-to-end: search a real location and see real nearby places with reviews/summaries appear
+
+**Beyond the original scope of this section** (real product problems found during testing, solved live):
+- Built a second serverless endpoint, `api/api/photos.js`, to proxy Google's Photo Media endpoint — needed because photo URLs require the API key directly in the URL, which would have exposed it in `<img src>` otherwise. Handles binary data (`response.arrayBuffer()` → `Buffer.from()`), a new pattern vs. the JSON-only endpoints so far.
+- Discovered `generativeSummary` never returns data (likely a gated/paywalled feature) and found `reviewSummary` as a working alternative through independent research.
+- Diagnosed that Nearby Search's rigid `includedTypes` filtering couldn't target "sunset-relevant" places at all, and switched the whole endpoint to Text Search (New) (`places:searchText`) with a free-text query instead.
+- Diagnosed that `locationBias` (Text Search's default) doesn't strictly exclude far-away results, and implemented a `locationRestriction` rectangle computed from lat/lon/radius by hand — real geodesy math (meters-per-degree, latitude-based cosine correction), self-written, with one real bug (used `lon` instead of `lat` in the correction factor) self-corrected after a guided explanation.
+- Added defensive guards (missing photos, missing reviewSummary, empty `places` array) after real runtime crashes, not preemptively.
 
 ### Section 5 — Directions via Google Maps
 Add a "Get Directions" link/button per place that opens Google Maps directions to that spot.

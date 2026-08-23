@@ -4,8 +4,8 @@
 
 ## Root
 
-- `index.html` — page structure and element ids that `script.js` hooks into (search box, result boxes). **known** — self-authored; understands the `display:none` → `display:block` toggle purpose (hide results until a location is searched), but not the timing subtlety (see below). → [[dom-visibility-toggling]]
-- `styles.css` — visual styling (gradients, glass/blur cards, layout). **known** — self-authored, straightforward CSS, no probe needed.
+- `index.html` — page structure and element ids that `script.js` hooks into: search box, geolocation/radius controls, sunset results, and `#nearby-sun-place` (the place-cards container). **known** — self-authored throughout, including all Section 2/4 additions.
+- `styles.css` — visual styling (gradients, glass/blur cards, layout, `.card` place cards with `overflow-y: auto`). **known** — self-authored throughout. → [[css-box-overflow]]
 - `script.js` — all app logic: geocoding branch (postcode vs city), browser geolocation, fetches to OpenWeather/postcodes.io/sunrisesunset.io/your own Places proxy, rendering results into the DOM. **known** — postcode/city branch, `getGeoLocation()`, the display-timing fix, and now `getNearbyPlaces(lat, lon, radius)` (calls `/api/api/viewpoints`, called from both search paths after the sunset lookup) were all self-authored with guided debugging. → [[async-fetch-flow]], [[dom-visibility-toggling]], [[browser-geolocation-api]], [[js-function-scope]], [[arrow-functions-and-callbacks]], [[google-places-api-new]]
 - `.vscode/launch.json` — **generated**, one-liner: VS Code's Edge-launch config for opening `index.html` directly. Machine-made, never hand-edit.
 - `skills-lock.json` — **generated**, one-liner: records which learning-method skills are installed and their source hashes. Not part of the app.
@@ -16,7 +16,8 @@
 
 ## api/
 
-- `api/api/viewpoints.js` — **known**: self-authored Vercel serverless function proxying Google Places API (New) Nearby Search — reads the key from `process.env`, POSTs to `places:searchNearby` with fixed test coordinates, returns real place data. → [[vercel-serverless-functions]], [[google-places-api-new]], [[api-key-security]], [[async-fetch-flow]]
+- `api/api/viewpoints.js` — **known**: self-authored Vercel serverless function proxying Google Places API (New) Text Search — reads lat/lon/radius from `req.query`, computes a `locationRestriction` bounding rectangle by hand (`radiusToRectangle`), searches with a sunset-relevant `textQuery`, returns real place data (name, address, photos, reviewSummary, rating). → [[vercel-serverless-functions]], [[google-places-api-new]], [[api-key-security]], [[async-fetch-flow]], [[geodesy-bounding-box-math]]
+- `api/api/photos.js` — **known**: self-authored second serverless proxy, forwards Google's Photo Media endpoint so the API key never appears in an `<img src>`. Handles binary image data via `response.arrayBuffer()`/`Buffer.from()`. → [[binary-data-handling]], [[api-key-security]]
 
 ## .agents/skills/
 
@@ -30,6 +31,4 @@
 
 ## Not yet present (relevant to the plan)
 
-- No `.git` — version control hasn't been set up yet. → [[git-version-control]]
-- No `.env`/env-var handling anywhere — will become load-bearing once the Vercel function needs to hold a secret key. → [[env-variables]]
-- No `package.json` — no dependencies yet; static site only so far.
+- No `package.json` — no dependencies yet; static site only so far. Not currently load-bearing for anything planned.

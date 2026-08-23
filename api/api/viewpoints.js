@@ -1,5 +1,6 @@
 export default async function vercel (req,res){
     const key = process.env.GOOGLE_API_KEY;
+    const bounds = radiusToRectangle(Number(req.query.lat), Number(req.query.lon), Number(req.query.radius));
     const response = await fetch (`https://places.googleapis.com/v1/places:searchText`, {
         method: 'POST',
         headers: {
@@ -9,18 +10,45 @@ export default async function vercel (req,res){
         },
         body: JSON.stringify({ 
             'textQuery' : 'scenic overlook  lookout beautifulsunset view point',
-            'locationBias': {
-                'circle': {
-                    'center': {
-                        'latitude':Number(req.query.lat),
-                        'longitude':Number(req.query.lon),
+            
+            'locationRestriction': {
+                'rectangle': {
+                    'low': {
+                        'latitude': bounds.low.latitude,
+                        'longitude': bounds.low.longitude,
                     },
-                    'radius': Number(req.query.radius)
+                    'high':{
+                        'latitude': bounds.high.latitude,
+                        'longitude': bounds.high.longitude, 
+                    }
+                    
                 }
         }
          })
 
-    })
+
+     })
+
+
+    function radiusToRectangle(lat, lon, radiusinMeters) {
+           
+            const MetersPerDegreeLat = 111320; // Approximate meters per degree latitude
+            const MetersPerDegreeLon =111320 * Math.cos(lat * (Math.PI /180)); // Approximate meters per degree longitude at given latitude
+
+            const dLat = radiusinMeters / MetersPerDegreeLat;
+            const dLon = radiusinMeters / MetersPerDegreeLon;
+
+            return {
+                low: {
+                    latitude: lat - dLat,
+                    longitude: lon - dLon,
+                },
+                high: {
+                    latitude: lat + dLat,
+                    longitude: lon + dLon,
+                }
+            }
+        }
     
     if (!response.ok) {
         console.log("Error fetching response", response.status);

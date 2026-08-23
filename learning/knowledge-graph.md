@@ -39,6 +39,7 @@
 - last-reviewed: 2026-08-08
 - evidence (2026-07-31): articulated unprompted that the Places key should live server-side on Vercel "so that when it goes public, the api is not visible" — correct reasoning, own words.
 - evidence (2026-08-08): correctly predicted `.env` alone wouldn't reach the deployed server since it's gitignored and never pushed; set the real key via `vercel env add` as a **sensitive** variable (understood that means write-only, unreadable later) scoped to Production; deployed with `vercel --prod`; independently verified via the Network tab that the key appears in neither request nor response on the live site. Full loop from stated intent to verified practice.
+- evidence (2026-08-14): recognized unprompted, before being told, that a Places Photo Media URL built client-side would expose the API key in `<img src>` — a second independent application of the pattern, not a repeated lesson.
 - depends-on: [[vercel-serverless-functions]], [[env-variables]]
 
 ## vercel-serverless-functions
@@ -57,7 +58,8 @@
 
 ## google-places-api-new
 - status: **practicing**
-- last-reviewed: 2026-08-10
+- last-reviewed: 2026-08-23
+- evidence (2026-08-23): recognized that Nearby Search's `includedTypes` couldn't semantically target "sunset-relevant" places, and drove the switch to Text Search (New) (`places:searchText` with `textQuery`). Diagnosed that `locationBias` doesn't strictly exclude distant results (explaining US places appearing for a UK search) and switched to `locationRestriction` with a rectangle. Found `reviewSummary` as a working alternative to the apparently gated/paywalled `generativeSummary` through independent investigation, and correctly identified its nested `.text.text` shape by inspecting the Network tab response directly rather than guessing.
 - evidence (2026-08-10): looked up real Places API (New) field names for reviews/AI summary via docs rather than guessing, confirmed both populated with real content. Debugged an end-to-end integration issue methodically: distinguished production vs. localhost testing, used the Network tab's Request URL/Status/Response to isolate a `200 OK` empty response from a `404`, and correctly reasoned that Google's `radius` field is in meters while the dropdown values represented kilometers — fixed by converting the actual `value` attributes (10000/20000/50000), not just the display labels.
 - evidence (2026-07-31): explicitly stated "i dont know... how to use the places api to retreive the sunset locations".
 - evidence (2026-08-04): built the real Nearby Search (New) POST request in `api/api/viewpoints.js` from a plain-language contract description (not shown code). Made and self-corrected real mistakes along the way — translated curl syntax to `fetch` options, fixed an array where a header needed a joined string, fixed a flat dotted key (`'locationRestriction.circle'`) into proper nesting, reordered `response.ok` check before `.json()` parsing after comparing to their own `script.js` pattern. Independently diagnosed a `400` error caused by an invalid `includedTypes` value by reading Google's docs, without being told the fix. Confirmed real place data (names, addresses, photos) returned end-to-end.
@@ -74,6 +76,36 @@
 - last-reviewed: 2026-08-02
 - evidence (2026-08-02): refactored named `success`/`error` functions into inline arrow-function arguments unprompted, stated this was just learned. Correctly used callback parameters after one guided fix.
 - depends-on: none
+
+## binary-data-handling
+- status: **practicing**
+- last-reviewed: 2026-08-23
+- evidence (2026-08-14): built `api/api/photos.js` from a plain-language contract (not shown code) — correctly used `response.arrayBuffer()` then `Buffer.from(...)` to get raw image bytes into a sendable form, `res.setHeader('Content-Type', ...)` to describe the response, and `res.send(...)` instead of `.json()`. Explained the whole chain back in their own words afterward, correcting one nuance (`req.query.name` reads, not fetches).
+- depends-on: [[vercel-serverless-functions]]
+
+## geodesy-bounding-box-math
+- status: **practicing**
+- last-reviewed: 2026-08-23
+- evidence (2026-08-23): independently wrote `radiusToRectangle(lat, lon, radiusInMeters)` converting a circle into a lat/lon bounding rectangle, including a cosine correction for longitude convergence — not taught, self-researched. One real bug (used `lon` instead of `lat` inside `Math.cos(...)`), self-corrected after an analogy-based explanation (globe/equator reasoning), not just told the fix. Also independently simplified four redundant calls to the function into one stored result.
+- depends-on: none
+
+## defensive-undefined-checks
+- status: **practicing**
+- last-reviewed: 2026-08-14
+- evidence (2026-08-09 to 2026-08-14): applied the same `if (x && x.length > 0)` / `if (x && x.field)` guard pattern three separate times independently after real runtime crashes — missing `photos`, missing `reviewSummary`, and an entirely missing `places` array from zero-result searches. By the third instance, proposed the fix themselves before being asked.
+- depends-on: none
+
+## css-box-overflow
+- status: **practicing**
+- last-reviewed: 2026-08-17
+- evidence (2026-08-17): diagnosed that a fixed-size box doesn't clip or resize for oversized content by default. Chose `overflow-y: auto` over `overflow: hidden` specifically to preserve uniform card dimensions without losing any content, after being given both options and stating a clear preference (no data loss) that determined which one applied.
+- depends-on: none
+
+## promise-then-catch-chains
+- status: **practicing**
+- last-reviewed: 2026-08-09
+- evidence (2026-08-09): wrote `getNearbyPlaces` using `.then()/.catch()` chaining rather than `async`/`await` (a valid alternate style), and correctly reasoned through why a `.catch()` at the end of a chain stops a `for` loop partway through on error rather than skipping just the failing iteration — a subtlety about how synchronous throws inside `.then()` propagate.
+- depends-on: [[async-fetch-flow]]
 
 ## google-maps-directions-links
 - status: **seed**
