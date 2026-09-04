@@ -5,7 +5,59 @@ const sunrise= document.getElementById("sunrise-box");
 const sunset = document.getElementById("sunset-box");
 const goldenHour = document.getElementById("golden-hour");
 
+const sun = document.getElementById("sun")
+const sky = document.querySelector('.sky-background');
 
+
+const canvas = document.getElementById("sun-canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const imageArray =[] 
+for(let i =1; i<=122;i++){
+    const paddedNumber=String(i).padStart(3,"0");
+    const frameImage = new Image()
+    function addNewImage(){
+        frameImage.src = `golden-hour-assets/frame_${paddedNumber}.jpg`;
+        return frameImage;
+    }
+    imageArray.push(addNewImage())
+}
+
+function drawFrame(index){
+    const scaledImage = drawImageScale(imageArray[index]);    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.drawImage(imageArray[index], scaledImage.offsetX, scaledImage.offsetY,scaledImage.scaledWidth,scaledImage.scaledHeight);
+}
+
+imageArray[0].onload = () => drawFrame(0);
+
+
+
+window.addEventListener('scroll', () =>{
+    const scrollPosition = window.scrollY;
+    const scrollableDistance = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollPosition / scrollableDistance);
+
+    const pageIndex = Math.floor(scrollPercentage *(imageArray.length-1))
+    drawFrame(pageIndex)
+
+}
+)
+
+    
+function drawImageScale(image) {
+    xScale = window.innerWidth/image.naturalWidth;
+    yScale =window.innerHeight/image.naturalHeight;
+    const scaleSelect = Math.max(xScale,yScale);
+    const scaledWidth = image.naturalWidth * scaleSelect;
+    const scaledHeight = image.naturalHeight * scaleSelect;
+    const offsetX = (canvas.width - scaledWidth)/2;
+    const offsetY = (canvas.height - scaledHeight)/2;
+    return {scaledWidth,scaledHeight,offsetX,offsetY};
+}
 
 
 async function getSunData(lat, lon,locationparam){
@@ -31,7 +83,7 @@ async function getSunData(lat, lon,locationparam){
         </div>`;
         goldenHour.innerHTML=
         `<div>
-            <h3>Golden Hour: ${data.results.golden_hour}</h3>
+            <h3>Golden Hour at ${data.results.golden_hour}</h3>
         </div>`;
     }
 
@@ -61,11 +113,6 @@ function getNearbyPlaces(lat, lon, radius) {
 
 }
              
-          
-        
-   
-        
-
 
 function placesCard (data, id,) {
     const parent = document.querySelector(id);// Get the parent element. Its another way of using document.getElementById
@@ -77,16 +124,16 @@ function placesCard (data, id,) {
     }
     let reviewSum = ''
     if (data.reviewSummary && data.reviewSummary.text){
-        reviewSum =`<p>"${data.reviewSummary.text.text}"</p>`;
+        reviewSum =`<p class= "review" >"${data.reviewSummary.text.text}"</p>`;
     }else{
-        reviewSum =`<p>No reviews available</p>`
+        reviewSum =`<p class= "review">No reviews available</p>`
     }
     let cardInfo = `<div class="card">
     ${photoHTML}
-    <div id="card-header"><h4 id="place-title">${data.displayName.text}</h4>
-    <a href ="https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}" target="_blank" class="directions-btn"> Get Directions </a>
+    <div class="card-header"><h4 id="place-title">${data.displayName.text}</h4>
+    <a  id ="direction-link" href ="https://www.google.com/maps/dir/?api=1&destination=${data.location.latitude},${data.location.longitude}" target="_blank" class="directions-btn"> Get Directions </a>
     </div>
-    <p>${data.formattedAddress}</p>
+    <p id="address">${data.formattedAddress}</p>
     ${reviewSum}
     <p>Rating: ${data.rating}</p>
     </div>`
@@ -115,8 +162,6 @@ function getGeoLocation() {
     );
     
 }
-
-
 
 
 async function findGoldenHour() {

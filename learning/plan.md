@@ -72,6 +72,19 @@ Deliverable: every listed place has a working one-click link to directions in Go
 - [x] Create a new serverless endpoint (e.g. `api/api/geocode.js`) proxying the OpenWeather city-lookup call, so that key moves server-side too
 - [x] Update `getCityLonAndLat` in `script.js` to call your new geocode proxy instead of OpenWeather directly
 
+### Section 6 — Scroll-driven sunset animation + typography
+Not part of the original scope — added after the original plan was fully built. A "sun" element moves/sets in the background as the user scrolls, driven by JavaScript (a real stack decision: chose JS over CSS's `animation-timeline: scroll()` for reliable cross-browser support, since a full fallback-free CSS-only approach isn't realistic yet). Also upgrades the typography for the hero title/subtitle and the sunrise/sunset/golden-hour boxes.
+No reclaim task forced — nothing currently parked/fuzzy in the graph naturally intersects with scroll-animation or typography work.
+Deliverable: scrolling the page visibly moves the sun and shifts the background, and the hero + result text use upgraded fonts.
+
+- [x] Add a `scroll` event listener in `script.js` that calculates scroll progress as a percentage (0 to 1)
+- [x] Add a "sun" element to `index.html`/`styles.css` with basic positioning (background layer, circle shape, initial placement)
+- [x] Use the scroll percentage to move the sun's position as the user scrolls (the core "sun sets" effect)
+- [x] Adjust background colors based on scroll percentage for added atmosphere — self-wrote a full `lerp`/`lerpColor` hex-color interpolation from scratch, beyond what was asked
+- [ ] Upgrade the font for the hero title/subtitle
+- [ ] Upgrade the font for the sunrise/sunset/golden-hour result boxes
+- [ ] Test the full scroll effect and typography together
+
 ## What this leaves out
 
 Nothing was parked or trimmed — the whole feature set you described maps directly onto Sections 2–5. No extra scope was added beyond what you asked for.

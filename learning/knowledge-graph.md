@@ -97,6 +97,24 @@
 - evidence (2026-08-09 to 2026-08-14): applied the same `if (x && x.length > 0)` / `if (x && x.field)` guard pattern three separate times independently after real runtime crashes — missing `photos`, missing `reviewSummary`, and an entirely missing `places` array from zero-result searches. By the third instance, proposed the fix themselves before being asked.
 - depends-on: none
 
+## scroll-event-and-progress-math
+- status: **practicing**
+- last-reviewed: 2026-08-24
+- evidence (2026-08-24): correctly used `window.addEventListener('scroll', ...)`, distinct from the `onclick` pattern used elsewhere. Initially believed the scrollable distance equaled the raw page height; corrected after a concrete numeric walkthrough to understand why `scrollHeight - innerHeight` is the actual denominator (the first/last screenful is already visible without scrolling).
+- depends-on: none
+
+## css-positioning-and-stacking
+- status: **practicing**
+- last-reviewed: 2026-08-24
+- evidence (2026-08-24): diagnosed a genuinely invisible element (`#sun`) through isolated experimentation — tried a large positive `z-index` to confirm the element existed and was being hidden by stacking order, rather than a sizing/positioning problem. Reasoned correctly about `position: fixed` vs `absolute` (viewport-anchored vs. document-anchored) when asked which fit a scroll-driven effect.
+- depends-on: none
+
+## color-interpolation
+- status: **practicing**
+- last-reviewed: 2026-08-24
+- evidence (2026-08-24): independently wrote a correct `lerp`/`lerpColor` implementation from scratch — parsing hex color strings into RGB integers, linear interpolation per channel, reassembling into a padded hex string — not taught, self-directed, beyond what the task asked for. One real bug (calling `lerpColor` before it was defined, correcting an initial misconception that calling an undefined function "silently skips" rather than throwing a `ReferenceError`).
+- depends-on: none
+
 ## css-box-overflow
 - status: **practicing**
 - last-reviewed: 2026-08-17
