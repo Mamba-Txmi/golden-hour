@@ -10,9 +10,9 @@ The 'learning' folder explicitly tracks my progress and shortcomings.
 In the beginning, I used Claude to create files, but as I went on, I strictly instructed it not to offer me generated code or create any files, as I wanted this learning process to be as immersive as possible whilst achieving my goals under a time constraint of 2 months.
 
 Through this process, I have learnt about:<br>
-The fundamentals of HTML, CSS design, and JavaScript,
-API's and how to use GET/POST HTTP requests,
-How to read documentation and debug code,
-Vercel Serverless Proxy and hiding valuable data,
-Using geolocation,
-Radius-to-rectangle conversion for the search radius function 
+The fundamentals of HTML, CSS design, and JavaScript,<br>
+API's and how to use GET/POST HTTP requests,<br>
+How to read documentation and debug code,<br>
+Vercel Serverless Proxy and hiding valuable data,<br>
+Using geolocation,<br>
+Radius-to-rectangle conversion for the search radius function.<br> 
