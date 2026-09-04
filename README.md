@@ -9,7 +9,7 @@ I  used claude/skills to plan the key milestones I needed to reach, track my pro
 The 'learning' folder explicitly tracks my progress and shortcomings.
 In the beginning, I used Claude to create files, but as I went on, I strictly instructed it not to offer me generated code or create any files, as I wanted this learning process to be as immersive as possible whilst achieving my goals under a time constraint of 2 months.
 
-Through this process, I have learnt about:
+Through this process, I have learnt about:<br>
 The fundamentals of HTML, CSS design, and JavaScript,
 API's and how to use GET/POST HTTP requests,
 How to read documentation and debug code,
