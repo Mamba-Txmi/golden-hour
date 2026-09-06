@@ -4,6 +4,7 @@ const locationAndTime = document.getElementById("location-time");
 const sunrise= document.getElementById("sunrise-box");
 const sunset = document.getElementById("sunset-box");
 const goldenHour = document.getElementById("golden-hour");
+const errorMessage = document.getElementById("error-message");
 
 const sun = document.getElementById("sun")
 const sky = document.querySelector('.sky-background');
@@ -173,14 +174,16 @@ async function findGoldenHour() {
         const response = await fetch(`/api/api/geocode?city=${encodeURIComponent(searchInput)}`);
         const data = await response.json();
         if(data.length === 0){ 
-            sunInfo.innerHTML = 
+            errorMessage.innerHTML = 
             `<h2>${searchInput} not found. </h2>
-                <p>Please try again </p>`;
-                return;
-            }else{
-                console.log(data);
-                return data[0]
-            }
+            <p>Please try again with a different City.</p>`
+            sunInfo.style.display ='none';
+            errorMessage.style.display ='block';
+            return;
+        }else{
+            console.log(data);
+            return data[0]
+        }
 
      }
 
@@ -190,11 +193,13 @@ async function findGoldenHour() {
         const response = await fetch(geocodeURL);
         if(!response.ok){
             console.log("There is a problem with the response", response.status);
-            sunInfo.innerHTML=
+            errorMessage.innerHTML=
             `<div>
                 <h4> There seems to be an error using this Postcode.</h4>
                 <p>Please try again.</p>
             </div>`
+            sunInfo.style.display ='none';
+            errorMessage.style.display ='block';
             return;
         }
         const data = await response.json();
@@ -208,9 +213,11 @@ async function findGoldenHour() {
          
         if (/\d/.test(searchInput)) {
             const postcodeData = await getPostcodeLonAndLat();
+            if (!postcodeData) return;
             return {lon : postcodeData.longitude,lat: postcodeData.latitude};
         } else{
             const cityData = await getCityLonAndLat();
+            if (!cityData) return;
             return{lon :cityData.lon,lat: cityData.lat};
         }
     }
@@ -222,6 +229,7 @@ async function findGoldenHour() {
     console.log(geoData);
     await getSunData(geoData.lat,geoData.lon,searchInput);
     await getNearbyPlaces(geoData.lat, geoData.lon, userRadius);
+    errorMessage.style.display ='none';
     sunInfo.style.display ='block';
     searchInput = "";
     

@@ -160,8 +160,20 @@ main{
     margin-top:40px;
     border-radius: 50px;
 }
+
+#error-message{
+    background-color:#e9e3d652;
+    -webkit-backdrop-filter: blur(8px) brightness(120%);
+    backdrop-filter:blur(8px) brightness(120%);
+    width: 80vw;
+    padding:30px;
+    margin-top:40px;
+    border-radius: 50px;
+}
+
 #location-time {
-    font-family: Figtree,serif;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
     font-weight: bold;
     font-size: 15px;
     
@@ -291,6 +303,7 @@ a{
     #golden-hour {font-size:15px;}
     #golden-site {width:300px;}
     #location-options{width:300px;}
+    #sun-data { width:400px;}
 }
 
 @media (max-width: 900px){
